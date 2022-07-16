@@ -13,5 +13,20 @@ UCLASS()
 class BERYOSKIGAME_API APawnPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void SetPawn(APawn* InPawn) override;
+
+protected:
+	virtual void SetupInputComponent() override;
+
+private:
+	void Move();
+	void ChangeForce();
+
+	void RotateRight(float Value);
+
+	void SpecialAbility();
+
+	TSoftObjectPtr<class APlayerPawn> CachedPawn;
 };

@@ -12,18 +12,46 @@ class BERYOSKIGAME_API APlayerPawn : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	APlayerPawn();
 
+	void ChangeForce();
+	void AddForceMultiply();
+	void Move();
+
+	void RotateRight(float Value);
+
+	FTimerHandle ForceTimer;
+
+	void SpecialAbility();
+
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class UStaticMeshComponent* SphereMesh;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components | Camera")
+	class USpringArmComponent* SpringArm;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components | Camera")
+	class UCameraComponent* Camera;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class USphereComponent* SphereCollision;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	class UArrowComponent* ArrowComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
+	float Force = 10000.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
+	int ForceMultiply = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
+	int MaxForceMultiply = 5;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
+	float ChangeForceSpeed = 0.5f;
+
+private:
+	bool CanMove();
 };
