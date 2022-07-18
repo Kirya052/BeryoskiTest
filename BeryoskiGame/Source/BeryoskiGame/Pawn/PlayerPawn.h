@@ -24,6 +24,10 @@ public:
 
 	void SpecialAbility();
 
+	virtual void PossessedBy(AController* NewController);
+
+	FTimerHandle AbilityTimer;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UStaticMeshComponent* SphereMesh;
@@ -52,6 +56,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
 	float ChangeForceSpeed = 0.5f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
+	float Radius = 100.0f;
+
+	void InitGameplayAbilitySystem(AController* NewController);
+
 private:
 	bool CanMove();
+
+	void StartLightning();
+
+	FRotator RotateValue;
+	FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
 };

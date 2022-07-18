@@ -7,6 +7,7 @@
 #include "Camera\CameraComponent.h"
 #include "GameFramework\SpringArmComponent.h"
 #include "Components\ArrowComponent.h"
+#include "DrawDebugHelpers.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -77,6 +78,19 @@ void APlayerPawn::RotateRight(float Value)
 
 void APlayerPawn::SpecialAbility()
 {
+	RotateValue = ArrowComponent->GetRelativeRotation();
+	GetWorld()->GetTimerManager().SetTimer(AbilityTimer, this, &APlayerPawn::StartLightning, 0.001f, true, 0.1f);
+}
+
+void APlayerPawn::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	InitGameplayAbilitySystem(NewController);
+}
+
+void APlayerPawn::InitGameplayAbilitySystem(AController* NewController)
+{
 
 }
 
@@ -94,5 +108,33 @@ bool APlayerPawn::CanMove()
 	}
 
 	return bCanMove;
+}
+
+void APlayerPawn::StartLightning()
+{
+	RotateRight(1.0f);
+
+	FHitResult hitResult;
+	
+	traceParams.bTraceComplex = true;
+	traceParams.bReturnPhysicalMaterial = false;
+
+	FVector StartPosition = ArrowComponent->GetComponentLocation();
+	FVector EndPosition =  ArrowComponent->GetForwardVector() * Radius + StartPosition;
+
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, StartPosition, EndPosition, ECollisionChannel::ECC_Visibility, traceParams))
+	{
+		DrawDebugLine(GetWorld(), StartPosition, EndPosition, FColor::Red, false, 0.5f, 0, 5);
+
+		if (hitResult.GetActor())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Overlap Actor %s"), *hitResult.GetActor()->GetName());
+			traceParams.AddIgnoredActor(hitResult.GetActor());
+		}
+	}
+	else
+	{
+		DrawDebugLine(GetWorld(), StartPosition, EndPosition, FColor::Green, false, 2.0f, 0, 5);
+	}
 }
 
