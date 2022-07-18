@@ -11,14 +11,6 @@
 
 APlayerPawn::APlayerPawn()
 {
-	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
-	RootComponent = SphereCollision;
-	SphereCollision->SetSimulatePhysics(true);
-	SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
-	SphereMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
-	SphereMesh->SetupAttachment(SphereCollision);
-
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(SphereCollision);
 	SpringArm->bDoCollisionTest = false;
@@ -27,7 +19,6 @@ APlayerPawn::APlayerPawn()
 	SpringArm->bInheritRoll = false;
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 1000.0f));
 	SpringArm->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
@@ -80,18 +71,6 @@ void APlayerPawn::SpecialAbility()
 {
 	RotateValue = ArrowComponent->GetRelativeRotation();
 	GetWorld()->GetTimerManager().SetTimer(AbilityTimer, this, &APlayerPawn::StartLightning, 0.001f, true, 0.1f);
-}
-
-void APlayerPawn::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-
-	InitGameplayAbilitySystem(NewController);
-}
-
-void APlayerPawn::InitGameplayAbilitySystem(AController* NewController)
-{
-
 }
 
 bool APlayerPawn::CanMove()

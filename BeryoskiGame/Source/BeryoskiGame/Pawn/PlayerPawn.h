@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "Pawn/BGBasePawn.h"
 #include "PlayerPawn.generated.h"
 
 UCLASS()
-class BERYOSKIGAME_API APlayerPawn : public APawn
+class BERYOSKIGAME_API APlayerPawn : public ABGBasePawn
 {
 	GENERATED_BODY()
 
@@ -24,22 +24,14 @@ public:
 
 	void SpecialAbility();
 
-	virtual void PossessedBy(AController* NewController);
-
 	FTimerHandle AbilityTimer;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	class UStaticMeshComponent* SphereMesh;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components | Camera")
 	class USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components | Camera")
 	class UCameraComponent* Camera;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	class USphereComponent* SphereCollision;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UArrowComponent* ArrowComponent;
@@ -59,7 +51,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
 	float Radius = 100.0f;
 
-	void InitGameplayAbilitySystem(AController* NewController);
 
 private:
 	bool CanMove();

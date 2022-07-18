@@ -13,5 +13,11 @@ UCLASS()
 class BERYOSKIGAME_API UBGAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
+
+public:
+	bool TryActivateAbilityWithTag(FGameplayTag GameplayTag, bool bAllowRemoteActivation = true);
+
+	bool TryCancelAbilityWithTag(FGameplayTag GameplayTag);
+
+	bool IsAbilityActive(FGameplayTag GameplayTag);
 };
