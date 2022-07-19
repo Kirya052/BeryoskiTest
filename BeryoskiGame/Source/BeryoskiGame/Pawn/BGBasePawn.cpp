@@ -5,7 +5,7 @@
 #include "Components\SphereComponent.h"
 #include "Components\StaticMeshComponent.h"
 #include "AbilitySystem\BGAbilitySystemComponent.h"
-#include <AbilitySystem\AttributeSet\BGPawnAttributeSet.h>
+#include "AbilitySystem\AttributeSet\BGPawnAttributeSet.h"
 
 
 ABGBasePawn::ABGBasePawn()

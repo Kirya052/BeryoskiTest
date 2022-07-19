@@ -8,6 +8,7 @@
 #include "BGBasePawn.generated.h"
 
 class UBGAbilitySystemComponent;
+class USphereComponent;
 UCLASS()
 class BERYOSKIGAME_API ABGBasePawn : public APawn, public IAbilitySystemInterface
 {
@@ -17,6 +18,8 @@ public:
 	ABGBasePawn();
 
 	virtual void PossessedBy(AController* NewController);
+
+	USphereComponent* GetRootSphere() { return SphereCollision; };
 
 	/**	IAbilitySystemInterface */
 	UFUNCTION(BlueprintCallable)
@@ -28,7 +31,7 @@ protected:
 	class UStaticMeshComponent* SphereMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
-	class USphereComponent* SphereCollision;
+	USphereComponent* SphereCollision;
 
 	// AbilitySystem
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")

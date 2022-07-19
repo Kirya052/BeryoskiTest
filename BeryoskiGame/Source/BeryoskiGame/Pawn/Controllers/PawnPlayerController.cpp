@@ -24,7 +24,7 @@ void APawnPlayerController::Move()
 {
 	if (CachedPawn.IsValid())
 	{
-		CachedPawn->Move();
+		CachedPawn->CancelMovementAbility();
 	}
 }
 
@@ -32,7 +32,7 @@ void APawnPlayerController::ChangeForce()
 {
 	if (CachedPawn.IsValid())
 	{
-		CachedPawn->ChangeForce();
+		CachedPawn->ActivateMovementAbility();
 	}
 }
 

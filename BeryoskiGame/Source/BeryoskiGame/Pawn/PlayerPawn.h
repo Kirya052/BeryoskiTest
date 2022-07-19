@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Pawn/BGBasePawn.h"
+#include "GameplayTagContainer.h"
 #include "PlayerPawn.generated.h"
 
 UCLASS()
@@ -14,17 +15,18 @@ class BERYOSKIGAME_API APlayerPawn : public ABGBasePawn
 public:
 	APlayerPawn();
 
-	void ChangeForce();
-	void AddForceMultiply();
-	void Move();
+	void ActivateMovementAbility();
+	void CancelMovementAbility();
 
 	void RotateRight(float Value);
-
-	FTimerHandle ForceTimer;
+	
+	bool CanMove();
 
 	void SpecialAbility();
 
 	FTimerHandle AbilityTimer;
+
+	FVector GetEyesPosition();
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components | Camera")
@@ -36,25 +38,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
 	class UArrowComponent* ArrowComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
-	float Force = 10000.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
-	int ForceMultiply = 1;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
-	int MaxForceMultiply = 5;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Force")
-	float ChangeForceSpeed = 0.5f;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
 	float Radius = 100.0f;
 
+	//AbilitySystem
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Abilities")
+	FGameplayTag MovementAbilityTag;
 
+	// ~ AbilitySystem
 private:
-	bool CanMove();
-
 	void StartLightning();
 
 	FRotator RotateValue;

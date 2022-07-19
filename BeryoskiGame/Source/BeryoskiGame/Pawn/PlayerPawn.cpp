@@ -8,6 +8,7 @@
 #include "GameFramework\SpringArmComponent.h"
 #include "Components\ArrowComponent.h"
 #include "DrawDebugHelpers.h"
+#include "AbilitySystem\BGAbilitySystemComponent.h"
 
 APlayerPawn::APlayerPawn()
 {
@@ -28,37 +29,15 @@ APlayerPawn::APlayerPawn()
 
 }
 
-void APlayerPawn::ChangeForce()
+void APlayerPawn::ActivateMovementAbility()
 {
-	GetWorld()->GetTimerManager().SetTimer(ForceTimer, this, &APlayerPawn::AddForceMultiply, ChangeForceSpeed, true);
+	AbilitySystemComponent->TryActivateAbilityWithTag(MovementAbilityTag);
 }
 
-void APlayerPawn::AddForceMultiply()
+void APlayerPawn::CancelMovementAbility()
 {
-	if (!CanMove())
-	{
-		return;
-	}
-	ForceMultiply++;
-
-	if (ForceMultiply > MaxForceMultiply)
-	{
-		Move();
-		ForceMultiply = 1.0f;
-	}
+	AbilitySystemComponent->TryCancelAbilityWithTag(MovementAbilityTag);
 }
-
-void APlayerPawn::Move()
-{
-	if (!CanMove())
-	{
-		return;
-	}
-	GetWorld()->GetTimerManager().ClearTimer(ForceTimer);
-	FVector ForceVector = ArrowComponent->GetForwardVector() * ForceMultiply * Force;
-	SphereCollision->AddForce(ForceVector, NAME_None, true);
-}
-
 
 void APlayerPawn::RotateRight(float Value)
 {
@@ -71,6 +50,11 @@ void APlayerPawn::SpecialAbility()
 {
 	RotateValue = ArrowComponent->GetRelativeRotation();
 	GetWorld()->GetTimerManager().SetTimer(AbilityTimer, this, &APlayerPawn::StartLightning, 0.001f, true, 0.1f);
+}
+
+FVector APlayerPawn::GetEyesPosition()
+{
+	return ArrowComponent->GetForwardVector();
 }
 
 bool APlayerPawn::CanMove()
